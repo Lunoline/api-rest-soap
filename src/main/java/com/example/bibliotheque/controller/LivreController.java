@@ -1,0 +1,33 @@
+package com.example.bibliotheque.controller;
+
+import com.example.bibliotheque.model.Livre;
+import com.example.bibliotheque.service.LivreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/livres")
+public class LivreController {
+
+    @Autowired
+    private LivreService livreService;
+
+    @GetMapping
+    public List<Livre> getAllLivres() {
+        return livreService.getAllLivres();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Livre> getLivre(@PathVariable Long id) {
+        return livreService.getLivreById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/disponibles")
+    public List<Livre> getLivresDisponibles() {
+        return livreService.getLivresDisponibles();
+    }
+}
